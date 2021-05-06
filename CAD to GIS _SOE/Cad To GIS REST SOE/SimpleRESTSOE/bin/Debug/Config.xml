@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ESRI.Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.esri.com/Desktop/AddIns">
+  <Name>NetSimpleRESTSOE</Name>
+  <AddInID>35B655C1-0FA9-4E88-ABC0-2014D9B8B014</AddInID>
+  <Description>.Net Simple REST SOE</Description>
+  <Version>1.0</Version>
+  <Author>ESRI</Author>
+  <Company>ESRI</Company>
+  <Date>2012-03-16T12:00:00</Date>
+  <Targets>
+    <Target name="Server" version="10.3" />
+  </Targets>
+  <AddIn language="CLR" library="CadToGIS.dll" namespace="NetSimpleRESTSOE">
+    <ServerObjectType>
+      <Name>MapServer</Name>
+      <ExtensionTypes>
+        <ExtensionType id="NetSimpleRESTSOE.CadToGIS" library="CadToGIS.dll" class="NetSimpleRESTSOE.CadToGIS">
+          <Name>CadToGIS</Name>
+          <DisplayName>Convert Cad to GIS Data SOE</DisplayName>
+          <Description>Convert Cad to GIS Data .Net</Description>
+          <Properties />
+          <Resources />
+          <Info>
+            <DefaultWebCapabilities />
+            <AllWebCapabilities />
+            <SupportsREST>true</SupportsREST>
+            <SupportsSOAP>false</SupportsSOAP>
+            <hasManagerPropertiesConfigurationPane>false</hasManagerPropertiesConfigurationPane>
+            <SupportsInterceptor>false</SupportsInterceptor>
+          </Info>
+        </ExtensionType>
+      </ExtensionTypes>
+    </ServerObjectType>
+  </AddIn>
+</ESRI.Configuration>

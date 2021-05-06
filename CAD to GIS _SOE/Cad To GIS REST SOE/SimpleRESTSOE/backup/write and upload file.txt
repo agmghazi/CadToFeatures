@@ -1,0 +1,256 @@
+﻿// Copyright 2014 ESRI
+// 
+// All rights reserved under the copyright laws of the United States
+// and applicable international laws, treaties, and conventions.
+// 
+// You may freely redistribute and use this sample code, with or
+// without modification, provided you include the original copyright
+// notice and use restrictions.
+// 
+// See the use restrictions at <your ArcGIS install location>/DeveloperKit10.3/userestrictions.txt.
+// 
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+
+using System.Collections.Specialized;
+
+using System.Runtime.InteropServices;
+
+using ESRI.ArcGIS.esriSystem;
+using ESRI.ArcGIS.Server;
+using ESRI.ArcGIS.Geometry;
+using ESRI.ArcGIS.Geodatabase;
+using ESRI.ArcGIS.Carto;
+using ESRI.ArcGIS.SOESupport;
+using System.IO;
+
+namespace NetSimpleRESTSOE
+{
+    [ComVisible(true)]
+    [Guid("592d9b60-bb6f-49f9-9429-e9c720bca615")]
+    [ClassInterface(ClassInterfaceType.None)]
+    [ServerObjectExtension("MapServer",
+        AllCapabilities = "",
+        DefaultCapabilities = "",
+        Description = "Convert Cad to GIS Data .Net",
+        DisplayName = "Convert Cad to GIS Data SOE",
+        Properties = "",
+        SupportsREST = true,
+        SupportsSOAP = false)]
+    public class NetSimpleRESTSOE : IServerObjectExtension, IRESTRequestHandler
+    {
+        private string soeName;
+        private IServerObjectHelper soHelper;
+        private ServerLogger serverLog;
+        private IRESTRequestHandler _reqHandler;
+        private IMapServerDataAccess mapServerDataAccess;
+        private IMapLayerInfos layerInfos;
+        private string localFilePath = string.Empty;
+        private string virtualFilePath =string.Empty;
+
+        public NetSimpleRESTSOE()
+        {
+            soeName = this.GetType().Name;
+            _reqHandler = new SoeRestImpl(soeName, CreateRestSchema()) as IRESTRequestHandler;
+        }
+
+        public void Init(IServerObjectHelper pSOH)
+        {
+            this.soHelper = pSOH;
+            string _outputDirectory = "C:\\arcgisserver\\directories\\arcgisoutput"; ;
+            this.serverLog = new ServerLogger();
+            this.mapServerDataAccess = (IMapServerDataAccess)this.soHelper.ServerObject;
+            IMapServer3 ms = (IMapServer3)this.mapServerDataAccess;
+            IMapServerInfo mapServerInfo = ms.GetServerInfo(ms.DefaultMapName);
+            this.layerInfos = mapServerInfo.MapLayerInfos;
+
+            serverLog.LogMessage(ServerLogger.msgType.infoStandard, this.soeName + ".init()", 200, "Initialized " + this.soeName + " SOE.");
+           
+
+            localFilePath = _outputDirectory + "\\" + pSOH.ServerObject.ConfigurationName.Replace('/', '\\') + "_" + pSOH.ServerObject.TypeName;
+            virtualFilePath = pSOH.ServerObject.ConfigurationName + "_" + pSOH.ServerObject.TypeName;
+        }
+
+        public void Shutdown()
+        {
+            serverLog.LogMessage(ServerLogger.msgType.infoStandard, this.soeName + ".init()", 200, "Shutting down " + this.soeName + " SOE.");
+            this.soHelper = null;
+            this.serverLog = null;
+            this.mapServerDataAccess = null;
+            this.layerInfos = null;
+        }
+
+        private RestResource CreateRestSchema()
+        {
+            RestResource soeResource = new RestResource(soeName, false, RootResHandler);
+            RestResource listFilesRes = new RestResource("Files", true, ListFilesHandler);
+
+            RestResource layerResource = new RestResource("layers", false, LayersResHandler);
+            soeResource.resources.Add(layerResource);
+
+            RestOperation getLayerCountByTypeOp = new RestOperation("DownloadFileHandler",
+                                                     new string[] { "inputText" },
+                                                      new string[] { "file", "json" },
+                                                      DownloadFileHandler);
+            soeResource.operations.Add(getLayerCountByTypeOp);
+            return soeResource;
+        }
+
+        public string GetSchema()
+        {
+            return _reqHandler.GetSchema();
+        }
+        private byte[] ListFilesHandler(NameValueCollection boundVariables,
+                                              string outputFormat,
+                                              string requestProperties,
+                                          out string responseProperties)
+        {
+            responseProperties = null;
+
+            FileInfo[] Files = new DirectoryInfo(localFilePath).GetFiles("*.txt");
+            JsonObject[] filesArr = new JsonObject[Files.Length];
+            for (int i = 0; i < Files.Length; i++)
+            {
+                JsonObject fileJson = new JsonObject();
+                fileJson.AddString("filename", Files[i].Name);
+                filesArr[i] = fileJson;
+            }
+            JsonObject filesJson = new JsonObject();
+            filesJson.AddObject("files", filesArr);
+            return Encoding.UTF8.GetBytes(filesJson.ToJson());
+        }
+
+        byte[] IRESTRequestHandler.HandleRESTRequest(string Capabilities,
+            string resourceName,
+            string operationName,
+            string operationInput,
+            string outputFormat,
+            string requestProperties,
+            out string responseProperties)
+        {
+            return _reqHandler.HandleRESTRequest(Capabilities, resourceName, operationName, operationInput, outputFormat, requestProperties, out responseProperties);
+        }
+
+        private byte[] RootResHandler(System.Collections.Specialized.NameValueCollection boundVariables,
+            string outputFormat,
+            string requestProperties,
+            out string responseProperties)
+        {
+            responseProperties = null;
+
+            JSONObject json = new JSONObject();
+            json.AddString("name", ".Net Simple REST SOE");
+            json.AddString("description", "Simple REST SOE with 1 sub-resource called \"layers\" and 1 operation called \"getLayerCountByType\".");
+            json.AddString("usage", "The \"layers\" subresource returns all layers in the map service.\n"
+                + "The \"getLayerCountByType\" operation returns a count of layer of specified type. It accepts one of the following values as input: \"feature\", \"raster\", "
+                + "\"dataset\", and \"all\".");
+            return Encoding.UTF8.GetBytes(json.ToJSONString(null));
+        }
+
+        private byte[] LayersResHandler(NameValueCollection boundVariables, string outputFormat, string requestProperties, out string responseProperties)
+        {
+            responseProperties = "{\"Content-Type\" : \"application/json\"}";
+
+            JSONArray layersArray = new JSONArray();
+            for (int i = 0; i < this.layerInfos.Count; i++)
+            {
+                IMapLayerInfo layerInfo = layerInfos.get_Element(i);
+                JSONObject jo = new JSONObject();
+                jo.AddString("name", layerInfo.Name);
+                jo.AddLong("id", layerInfo.ID);
+                jo.AddString("type", layerInfo.Type);
+                jo.AddString("description", layerInfo.Description);
+
+                layersArray.AddJSONObject(jo);
+            }
+
+            JSONObject result = new JSONObject();
+            result.AddJSONArray("layers", layersArray);
+            return Encoding.UTF8.GetBytes(result.ToJSONString(null));
+        }
+
+        private byte[] DownloadFileHandler(NameValueCollection boundVariables,
+                                                  JsonObject operationInput,
+                                                      string outputFormat,
+                                                      string requestProperties,
+                                                  out string responseProperties)
+        {
+            responseProperties = "";
+            ////Make sure you set the response properties (Content-Type header) properly
+            System.Diagnostics.Debugger.Launch();
+
+            string fileId = Guid.NewGuid().ToString("N");
+            string fileName = "testFile_" + fileId + ".txt";
+            string inputText;
+            bool found = operationInput.TryGetString("inputText", out inputText);
+            if (!found || string.IsNullOrEmpty(inputText))
+                inputText = "default input...";
+            string file = localFilePath + "\\" + fileName;
+            System.IO.StreamWriter sw = System.IO.File.CreateText(file);
+            sw.WriteLine(inputText);
+            sw.Close();
+            long fileSize = new System.IO.FileInfo(file).Length;
+
+            if (outputFormat == "json")
+            {
+                responseProperties = "{\"Content-Type\" : \"application/json\"}";
+
+
+                //EnvironmentManager envMgr = new EnvironmentManager();
+                //UID envUID = new UID();
+               
+                string requestURL = @"http://localhost:6080/arcgis";
+
+                //string requestURL = ServerUtilities.GetServerEnvironment().Properties.GetProperty("RequestContextURL") as string;
+                string fileVirutualURL = requestURL + "/rest/directories/arcgisoutput/" + virtualFilePath + "/" + fileName;
+                JsonObject jsonResult = new JsonObject();
+                jsonResult.AddString("url", fileVirutualURL);
+                jsonResult.AddString("fileName", fileName);
+                jsonResult.AddString("fileSizeBytes", Convert.ToString(fileSize));
+                return Encoding.UTF8.GetBytes(jsonResult.ToJson());
+
+            }
+            else if (outputFormat == "file")
+            {
+                responseProperties = "{\"Content-Type\" : \"application/octet-stream\",\"Content-Disposition\": \"attachment; filename=" + fileName + "\"}";
+                return System.IO.File.ReadAllBytes(file);
+            }
+            return Encoding.UTF8.GetBytes("");
+        }
+
+        private byte[] createErrorObject(int codeNumber, String errorMessageSummary, String[] errorMessageDetails)
+        {
+            if (errorMessageSummary.Length == 0 || errorMessageSummary == null)
+            {
+                throw new Exception("Invalid error message specified.");
+            }
+
+            JSONObject errorJSON = new JSONObject();
+            errorJSON.AddLong("code", codeNumber);
+            errorJSON.AddString("message", errorMessageSummary);
+
+            if (errorMessageDetails == null)
+            {
+                errorJSON.AddString("details", "No error details specified.");
+            }
+            else
+            {
+                String errorMessages = "";
+                for (int i = 0; i < errorMessageDetails.Length; i++)
+                {
+                    errorMessages = errorMessages + errorMessageDetails[i] + "\n";
+                }
+
+                errorJSON.AddString("details", errorMessages);
+            }
+
+            JSONObject error = new JSONObject();
+            errorJSON.AddJSONObject("error", errorJSON);
+
+            return Encoding.UTF8.GetBytes(errorJSON.ToJSONString(null));
+        }
+    }
+}

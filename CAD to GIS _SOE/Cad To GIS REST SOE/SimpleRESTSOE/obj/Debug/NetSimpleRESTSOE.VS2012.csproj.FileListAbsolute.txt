@@ -1,0 +1,19 @@
+C:\Program Files (x86)\ArcGIS\DeveloperKit10.3\Samples\ArcObjectsNet\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\NetSimpleRESTSOE.dll
+C:\Program Files (x86)\ArcGIS\DeveloperKit10.3\Samples\ArcObjectsNet\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\NetSimpleRESTSOE.pdb
+C:\Program Files (x86)\ArcGIS\DeveloperKit10.3\Samples\ArcObjectsNet\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\obj\Debug\NetSimpleRESTSOE.VS2012.csprojResolveAssemblyReference.cache
+C:\Program Files (x86)\ArcGIS\DeveloperKit10.3\Samples\ArcObjectsNet\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\obj\Debug\NetSimpleRESTSOE.dll
+C:\Program Files (x86)\ArcGIS\DeveloperKit10.3\Samples\ArcObjectsNet\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\obj\Debug\NetSimpleRESTSOE.pdb
+C:\Program Files (x86)\ArcGIS\DeveloperKit10.3\Samples\ArcObjectsNet\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\NetSimpleRESTSOE.soe
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Rackspace.Threading.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\System.Net.Http.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\System.Threading.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Rackspace.Threading.xml
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\System.Threading.xml
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.pdb
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.xml
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\CadToGIS.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\CadToGIS.pdb
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\obj\Debug\CadToGIS.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\obj\Debug\CadToGIS.pdb
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\CadToGIS.soe

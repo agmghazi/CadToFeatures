@@ -1,0 +1,27 @@
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\CadToGIS.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\CadToGIS.pdb
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Rackspace.Threading.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\System.Net.Http.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\System.Threading.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.pdb
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.xml
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\Rackspace.Threading.xml
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\System.Threading.xml
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\obj\Debug\CadToGISRESTSOE.VS2012.csprojResolveAssemblyReference.cache
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\obj\Debug\CadToGIS.dll
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\obj\Debug\CadToGIS.pdb
+F:\app\ServerSimpleRESTSOE\CSharp\SimpleRESTSOE\bin\Debug\CadToGIS.soe
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\CadToGIS.dll
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\CadToGIS.pdb
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.dll
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Rackspace.Threading.dll
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\System.Net.Http.dll
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\System.Threading.dll
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.pdb
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.xml
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Rackspace.Threading.xml
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\System.Threading.xml
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\obj\Debug\CadToGIS.dll
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\obj\Debug\CadToGIS.pdb
+F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\CadToGIS.soe
