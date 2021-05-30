@@ -25,3 +25,16 @@ F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\
 F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\obj\Debug\CadToGIS.dll
 F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\obj\Debug\CadToGIS.pdb
 F:\app\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\CadToGIS.soe
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\CadToGIS.dll
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\CadToGIS.pdb
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.dll
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Rackspace.Threading.dll
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\System.Net.Http.dll
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\System.Threading.dll
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.pdb
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Newtonsoft.Json.xml
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\Rackspace.Threading.xml
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\System.Threading.xml
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\obj\Debug\CadToGIS.dll
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\obj\Debug\CadToGIS.pdb
+F:\apps\arcobject Projects\CAD to GIS _SOE\Cad To GIS REST SOE\SimpleRESTSOE\bin\Debug\CadToGIS.soe
