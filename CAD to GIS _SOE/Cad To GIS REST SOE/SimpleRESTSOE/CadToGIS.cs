@@ -14,11 +14,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
 using System.Collections.Specialized;
-
 using System.Runtime.InteropServices;
-
 using ESRI.ArcGIS.esriSystem;
 using ESRI.ArcGIS.Server;
 using ESRI.ArcGIS.Geometry;
@@ -27,12 +24,13 @@ using ESRI.ArcGIS.Carto;
 using ESRI.ArcGIS.SOESupport;
 using System.IO;
 using ESRI.ArcGIS.DataSourcesFile;
-
 using ESRI.ArcGIS.AnalysisTools;
 using ESRI.ArcGIS.Geoprocessor;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using ESRI.ArcGIS.DataSourcesGDB;
+using ESRI.ArcGIS.DataManagementTools;
+using ESRI.ArcGIS.ConversionTools;
 
 namespace NetSimpleRESTSOE
 {
@@ -61,6 +59,7 @@ namespace NetSimpleRESTSOE
         private string environmentUrl = @"F:\apps\CadFile\Data\Madinah_27-12-2020\shp";
         JObject o2jdonSplitLine;
         JObject o2jdonShp;
+        JObject o2jdonPoint;
 
         public CadToGIS()
         {
@@ -142,9 +141,8 @@ namespace NetSimpleRESTSOE
                                                   out string responseProperties)
         {
             responseProperties = "";
-            
 
-            //System.Diagnostics.Debugger.Launch();   //for dubuging
+
 
             string inputFile = string.Empty;
 
@@ -153,7 +151,7 @@ namespace NetSimpleRESTSOE
             string file = localFilePath + inputFile + "\\" + "parcle.dwg";
 
             long fileSize = new System.IO.FileInfo(file).Length;
-           
+
             string message = "";
 
             // Initialize the Geoprocessor
@@ -162,11 +160,11 @@ namespace NetSimpleRESTSOE
             // Set workspace environment
             GP.SetEnvironmentValue("workspace", environmentUrl);
             // Initialize the Conversion Tool
-            ESRI.ArcGIS.ConversionTools.FeatureClassToShapefile FShape = new ESRI.ArcGIS.ConversionTools.FeatureClassToShapefile();
+            FeatureClassToShapefile FShape = new FeatureClassToShapefile();
 
             FShape.Input_Features = file + "\\Polygon";
             Guid g = Guid.NewGuid();
-            if (!Directory.Exists(environmentUrl+ "\\" + g ))
+            if (!Directory.Exists(environmentUrl + "\\" + g))
             {
                 Directory.CreateDirectory(environmentUrl + "\\" + g);
             }
@@ -176,7 +174,7 @@ namespace NetSimpleRESTSOE
             {
                 GP.Execute(FShape, null);
 
-                ESRI.ArcGIS.DataManagementTools.AddGeometryAttributes aGeoAttr = new ESRI.ArcGIS.DataManagementTools.AddGeometryAttributes();
+                AddGeometryAttributes aGeoAttr = new AddGeometryAttributes();
                 aGeoAttr.Input_Features = environmentUrl + "\\" + g + "\\parcle_dwg_Polygon.shp";
                 aGeoAttr.Geometry_Properties = "AREA";
                 try
@@ -189,7 +187,7 @@ namespace NetSimpleRESTSOE
                 }
 
 
-                ESRI.ArcGIS.ConversionTools.FeaturesToJSON FShpToJson = new ESRI.ArcGIS.ConversionTools.FeaturesToJSON();
+                FeaturesToJSON FShpToJson = new FeaturesToJSON();
 
                 FShpToJson.in_features = environmentUrl + "\\" + g + "\\parcle_dwg_Polygon.shp";
 
@@ -223,13 +221,13 @@ namespace NetSimpleRESTSOE
                 message = ex.ToString();
             }
 
-            ESRI.ArcGIS.DataManagementTools.FeatureToLine FToLine = new ESRI.ArcGIS.DataManagementTools.FeatureToLine();
+            FeatureToLine FToLine = new FeatureToLine();
 
             FToLine.in_features = environmentUrl + "\\" + g + "\\parcle_dwg_Polygon.shp";
             Guid gToline = Guid.NewGuid();
 
-            string FToLineOutput = @"F:\apps\CadFile\Data\Madinah_27-12-2020\testDB\testDB.gdb" ;
-            string FToLineOutputing = FToLineOutput + "\\parcle_dwg_Polygon_FeatureTo" + gToline.ToString("N").Substring(0, 7);
+            string FToLineOutput = @"F:\apps\CadFile\Data\Madinah_27-12-2020\testDB\testDB.gdb";
+            string FToLineOutputing = FToLineOutput + "\\parcle_dwg_Polygon_FeatureTo" + gToline.ToString("N").Substring(0, 8);
             FToLine.out_feature_class = FToLineOutputing;
             try
             {
@@ -242,30 +240,31 @@ namespace NetSimpleRESTSOE
 
             Guid gSplitLine = Guid.NewGuid();
 
-            ESRI.ArcGIS.DataManagementTools.SplitLine SLP = new ESRI.ArcGIS.DataManagementTools.SplitLine();
-          
+            SplitLine SLP = new SplitLine();
+
             SLP.in_features = FToLineOutputing;
 
-            string out_feature_class = FToLineOutput + "\\parcle_dwg_Polygon_FeatureTo2" + gSplitLine.ToString("N").Substring(0, 7); 
-           
-            SLP.out_feature_class = out_feature_class;
+            string SplitLine_OFC = FToLineOutput + "\\parcle_dwg_Polygon_FeatureTo2" + gSplitLine.ToString("N").Substring(0, 8);
+            string out_feature_class = SplitLine_OFC;
 
+            SLP.out_feature_class = out_feature_class;
 
             try
             {
                 GP.Execute(SLP, null);
 
-                ESRI.ArcGIS.ConversionTools.FeaturesToJSON FSLineToJson = new ESRI.ArcGIS.ConversionTools.FeaturesToJSON();
+                FeaturesToJSON FSLineToJson = new FeaturesToJSON();
 
                 FSLineToJson.in_features = out_feature_class;
 
                 //FJson.out_json_file = @"F:\apps\CadFile\Data\Madinah_27-12-2020\myjson.json";
                 Guid SLgg = Guid.NewGuid();
+                string jdonSplitLine = environmentUrl + "\\" + SLgg.ToString("N").Substring(0, 8) + "SplitLine" + ".json";
 
-                FSLineToJson.out_json_file = environmentUrl + "\\" + SLgg + "SplitLine" + ".json";
-                string jdonSplitLine = environmentUrl + "\\" + SLgg + "SplitLine" + ".json";
+                FSLineToJson.out_json_file = jdonSplitLine;
 
                 FSLineToJson.format_json = "FORMATTED";
+
                 try
                 {
                     GP.Execute(FSLineToJson, null);
@@ -278,6 +277,100 @@ namespace NetSimpleRESTSOE
                     {
                         o2jdonSplitLine = (JObject)JToken.ReadFrom(reader);
                     }
+
+
+                    FeatureVerticesToPoints FVerToPoint = new FeatureVerticesToPoints();
+
+                    FVerToPoint.in_features = SplitLine_OFC;
+
+                    Guid FVerToPointgg = Guid.NewGuid();
+                    string FVerToPointOutFeature = FToLineOutput + "\\parcle_dwg_Polygon_FeatureTo1" + FVerToPointgg.ToString("N").Substring(0, 8);
+
+                    FVerToPoint.out_feature_class = FVerToPointOutFeature;
+
+                    FVerToPoint.point_location = "START";
+
+                    try
+                    {
+                        GP.Execute(FVerToPoint, null);
+
+
+                        FeaturesToJSON FVerToPointToJson = new FeaturesToJSON();
+
+                        FVerToPointToJson.in_features = FVerToPointOutFeature;
+
+                        Guid SLggFVerToPoint = Guid.NewGuid();
+                        string jdonFVerToPoint = environmentUrl + "\\" + SLggFVerToPoint.ToString("N").Substring(0, 8) + "FVerToPoint" + ".json";
+
+                        FVerToPointToJson.out_json_file = jdonFVerToPoint;
+
+                        FVerToPointToJson.format_json = "FORMATTED";
+
+                        try
+                        {
+                            GP.Execute(FVerToPointToJson, null);
+
+
+                            //read file
+                            JObject oToPoint = JObject.Parse(File.ReadAllText(jdonFVerToPoint));
+
+                            // read JSON directly from a file
+                            using (StreamReader jsonFile = File.OpenText(jdonFVerToPoint))
+                            using (JsonTextReader reader = new JsonTextReader(jsonFile))
+                            {
+                                o2jdonPoint = (JObject)JToken.ReadFrom(reader);
+                            }
+
+                            //delete all used files
+                            System.IO.DirectoryInfo di = new DirectoryInfo(environmentUrl);
+
+                            foreach (FileInfo fileUsed in di.GetFiles())
+                            {
+                                fileUsed.Delete();
+                            }
+                            foreach (DirectoryInfo dir in di.GetDirectories())
+                            {
+                                dir.Delete(true);
+                            }
+
+                            System.Diagnostics.Debugger.Launch();   //for dubuging
+
+                            //delete all features 
+                            string[] deleteFeatures = { FVerToPointOutFeature, SplitLine_OFC, FToLineOutputing };
+
+                            DeleteFeatures delFeaturePoint = new DeleteFeatures();
+                            delFeaturePoint.in_features = FVerToPointOutFeature;
+
+                            DeleteFeatures delFeatureSplitLine = new DeleteFeatures();
+                            delFeatureSplitLine.in_features = SplitLine_OFC;
+
+                            DeleteFeatures delFeatureLine = new DeleteFeatures();
+                            delFeatureLine.in_features = FToLineOutputing;
+
+                            try
+                            {
+                                GP.Execute(delFeaturePoint, null);
+                                GP.Execute(delFeatureSplitLine, null);
+                                GP.Execute(delFeatureLine, null);
+                            }
+                            catch (Exception ex)
+                            {
+                                message = ex.ToString();
+                            }
+
+                        }
+                        catch (Exception ex)
+                        {
+
+                            message = ex.ToString();
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        message = ex.ToString();
+                    }
+
                 }
                 catch (Exception ex)
                 {
@@ -299,7 +392,9 @@ namespace NetSimpleRESTSOE
                     jsonResult.AddString("errors", message.ToString());
                 }
                 jsonResult.AddString("Lines", o2jdonSplitLine.ToString());
-                jsonResult.AddString("Polygon", o2jdonShp.ToString());
+                jsonResult.AddString("Polygons", o2jdonShp.ToString());
+                jsonResult.AddString("Points", o2jdonPoint.ToString());
+
                 //jsonResult.AddString("fileName", inputFile);
                 //jsonResult.AddString("fileSizeBytes", Convert.ToString(fileSize));
                 return Encoding.UTF8.GetBytes(jsonResult.ToJson());
